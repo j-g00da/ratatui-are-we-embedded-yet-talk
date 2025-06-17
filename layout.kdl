@@ -1,0 +1,15 @@
+layout {
+    pane name="Ratatui - Are We Embedded Yet?" {
+        command "presenterm"
+        args "-Xx" "--config-file=config.yaml" "talk.md"
+    }
+    floating_panes {
+        pane name="cheese :3" {
+            height "60%"
+            width "84%"
+            x "8%"
+            y "30%"
+            cwd "../ratatui"
+        }
+    }
+}
