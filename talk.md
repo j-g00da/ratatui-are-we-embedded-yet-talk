@@ -95,26 +95,56 @@ Custom backends:
 
 soft_ratatui
 ===
-TODO: demo
+> Software rendering backend for ratatui. No GPU required. TUI everywhere.
+> 
+> Fast, portable, no-bloat.
+> 
+> Optimized for speed, generally faster than running ratatui inside a terminal. 120+ fps on normal workloads.
+> Only one dependency, Unicode Font rendering powered by cosmic-text
+> Custom portable pixel rasterizer.
+
+~ soft_ratatui docs
+
 <!-- end_slide -->
 
 
 ratatui-uefi
 ===
-TODO: demo
+> Implements a ratatui backend for use in UEFI environments.
+
+~ ratatui-uefi docs
+
 <!-- end_slide -->
 
 
 FOSDEM 2025
 ===
-TODO: few words about FOSDEM, intro to Ratzilla
+```
+              ▓▓    ░░                                                                                        
+        ▓▓   ▒▓▓▒  ▓▓▓                                                                                        
+        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓    ░                                                                                   
+        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                                                                   
+   ▓▓▓▓▓▓▓▓▓        ░▓▓▓▓▓         ▓▓▓▓▓▓▓▓▓  ░▓▓▓▓▓▓▓░    ▓▓▓▓▓▓▓▓░ ░▓▓▓▓▓▓▓▓    ░▓▓▓▓▓▓▓▓▓  ░▓▓▓▓   ▒▓▓▓▓   
+     ▒▓▓▓▓            ▓▓▓▓▓▓▓▓     ▓▓▓░      ▒▓▓▓   ▓▓▓▓  ▓▓▓   ░▓▓  ░▓▓▓  ░▓▓▓▓  ░▓▓▓        ░▓▓▓▓░  ▓▓▓▓▓   
+     ▓▓▓▓    ▓▒   ▓▒   ▓▓▓▓▓▓      ▓▓▓░      ▓▓▓     ▓▓▓  ▓▓▓▓░      ░▓▓▓    ▓▓▓  ░▓▓▓        ▓▓▓░▓▓ ░▓▓▒▓▓░  
+  ▓▓▓▓▓▓▓  ▒▓▓▓▓▒▓▓▓▓  ▒▓▓▓▓       ▓▓▓▓▓▓▓▓ ░▓▓▓     ▓▓▓▒ ░▓▓▓▓▓▓▓░  ░▓▓▓    ▓▓▓▓ ░▓▓▓▓▓▓▓    ▓▓▓ ▓▓░▓▓▓░▓▓   
+     ▓▓▓▓   ▓▓▓░ ▓▓▓░  ▓▓▓▓▓▒      ▓▓▓░      ▓▓▓     ▓▓▓░     ░▓▓▓▓  ░▓▓▓    ▓▓▓▒ ░▓▓▓        ▓▓▓ ▓▓▓▓▓░░▓▓▒  
+     ░▓▓▓▓            ░▓▓▓▓▓▓▓     ▓▓▓░      ▓▓▓▓   ▓▓▓▓  ▓░    ▓▓▓░ ░▓▓▓   ▓▓▓▓  ░▓▓▓       ░▓▓▓  ▓▓▓▓ ░▓▓▓  
+   ▒▓▓▓▓▓▓▓          ▓▓▓▓▓         ▓▓▓░       ▒▓▓▓▓▓▓▓▓  ▒▓▓▓▓▓▓▓▓▓  ░▓▓▓▓▓▓▓▓▓    ▓▓▓▓▓▓▓▓▓  ▓▓▓       ░▓▓▓  
+       ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                                                                   
+        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒  ▓▓                                                                                   
+        ▓▓   ▓▓▓▓▓ ▓▓▓                                                                                        
+             ░▓▓    ▓░                                                                                                                                                                                                                        
+```
 <!-- end_slide -->
 
 
 
 Ratzilla
 ===
-TODO: Ratzilla demo, first ideas for running Ratatui on MCU
+> Build terminal-themed web applications with Rust and WebAssembly. Powered by Ratatui.
+
+~ Ratzilla docs
 <!-- end_slide -->
 
 
