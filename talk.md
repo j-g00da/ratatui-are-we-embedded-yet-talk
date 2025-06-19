@@ -148,12 +148,10 @@ Ratzilla
 <!-- end_slide -->
 
 
-
 Rustmeet 2025
 ===
 TODO: few words about esp32 quiz device
 <!-- end_slide -->
-
 
 
 Ratatui on Minitel
@@ -168,12 +166,16 @@ TODO: why no_std is a thing, linking stuff, std, core, alloc, libc etc.
 <!-- end_slide -->
 
 
-
 Std on embedded?
 ===
 TODO: esp-idf-svc, how it works with std
 <!-- end_slide -->
 
+
+Build your own backend (quickstart)
+===
+TODO
+<!-- end_slide -->
 
 
 Mousefood
@@ -182,12 +184,10 @@ TODO: first version of mousefood, coded in bed in the middle of the night
 <!-- end_slide -->
 
 
-
 Unicode
 ===
 TODO: Unicode did not work
 <!-- end_slide -->
-
 
 
 IBM437
@@ -196,12 +196,10 @@ TODO: unicode cd.
 <!-- end_slide -->
 
 
-
 embedded-graphics/bdf
 ===
 TODO: unicode cd.
 <!-- end_slide -->
-
 
 
 embedded-graphics-unicodefonts
@@ -210,12 +208,22 @@ TODO: unicode cd.
 <!-- end_slide -->
 
 
-
 Cozette
 ===
-TODO: unicode cd.
+`the-moonwitch/`*Cozette* (Literally this font) 
 <!-- end_slide -->
 
+
+Buffer flushing inconsistencies
+===
+TODO
+<!-- end_slide -->
+
+
+Optimizations
+===
+TODO
+<!-- end_slide -->
 
 
 Demo
@@ -224,12 +232,46 @@ TODO: demo
 <!-- end_slide -->
 
 
-
 Ok, let's get back to `#[no_std]` thing...
 ===
 TODO: the tracking issue, list things that that required changes
 <!-- end_slide -->
 
 
+Trivial changes and linter rules
+===
+TODO
+<!-- end_slide -->
 
 
+Upstream crates
+===
+TODO
+<!-- end_slide -->
+
+
+Layout cache
+===
+TODO
+<!-- end_slide -->
+
+
+f64 polyfills
+===
+TODO
+<!-- end_slide -->
+
+
+No-std Ratatui
+===
+TODO: what is currently available in no_std
+<!-- end_slide -->
+
+
+What's next?
+===
+TODO: upcoming mousefood release
+<!-- end_slide -->
+
+
+Rat in The Wild Challenge
