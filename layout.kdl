@@ -9,7 +9,6 @@ layout {
             width "84%"
             x "8%"
             y "30%"
-            cwd "../ratatui"
         }
     }
 }
