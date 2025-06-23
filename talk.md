@@ -6,6 +6,8 @@ theme:
             colors:
                 background: "110000"
                 foreground: "ffaa55"
+#options:
+#    incremental_lists: true
 ---
 
 
@@ -217,9 +219,23 @@ pub trait Backend {
 <!-- end_slide -->
 
 
-Mousefood
+Mousefood v0.0.1
 ===
-TODO: first version of mousefood, coded in bed in the middle of the night
+
+<!-- column_layout: [2, 1] -->
+<!-- column: 0 -->
+
+Made a PoC and managed to render a `Hello, World!` using Ratatui.  
+Then decided I don't need sleep.
+
+Used `IBM437` crate in order to add _minimal_ unicode support.
+
+![image:width:100%](assets/mousefood_v0.0.1.jpg)
+
+<!-- column: 1 -->
+
+![image:width:100%](assets/mousefood_v0.0.1.gif)
+
 <!-- end_slide -->
 
 
@@ -229,21 +245,31 @@ TODO: Unicode did not work
 <!-- end_slide -->
 
 
+Embedded-graphics fonts
+===
+Designed to fit on most microcontrollers.
+Cons:
+- Small range of available characters (`ASCII` or `ISO 8859` or `JIS X0201`) making it impossible to draw most widgets.
+
+![image:width:30%](assets/eg_font.png)
+
+<!-- end_slide -->
+
+
 IBM437
 ===
-TODO: unicode cd.
+Used for `Mousefood` v0.0.1 and made it possible to draw borders.
+
+Cons:
+- Too small set of characters for most widgets 
+
+![image:width:30%](assets/ibm437.png)
 <!-- end_slide -->
 
 
 embedded-graphics/bdf
 ===
-TODO: unicode cd.
-<!-- end_slide -->
-
-
-embedded-graphics-unicodefonts
-===
-TODO: unicode cd.
+Idea - use `embedded-graphics/bdf` to generate a custom `embedded-graphics` font.
 <!-- end_slide -->
 
 
@@ -251,6 +277,16 @@ Cozette
 ===
 `the-moonwitch/`*Cozette* (Literally this font) 
 <!-- end_slide -->
+
+
+embedded-graphics-unicodefonts
+===
+TODO: unicode cd.
+
+![image:width:100%](assets/unicodefonts.png)
+
+<!-- end_slide -->
+
 
 
 Buffer flushing inconsistencies
@@ -280,11 +316,12 @@ TODO: the tracking issue, list things that that required changes
 Trivial changes
 ===
 
-- explicitly use `core` or `alloc` instead of `std` if possible
-- add linter rules that check for unnecessary `std` usages
-- disable `std` features in upstream crates
-- use `kasuari` instead of unmaintained `cassowary` crate
-- add necessary feature flags
+- Use `core` or `alloc` instead of `std` if possible
+- Add linter rules that check for unnecessary `std` usages
+- Disable `std` features in upstream crates
+- Use `kasuari` instead of unmaintained `cassowary` crate
+- Add necessary feature flags
+
 TODO: code snippets
 <!-- end_slide -->
 
@@ -365,7 +402,22 @@ use crate::polyfills::F64Polyfills;
 
 No-std Ratatui
 ===
-TODO: what is currently available in no_std
+No-std compatible crates:
+- `ratatui` (requires disabling `default-features`)    >= v0.30.0-alpha.4
+- `ratatui-core`                                     >= v0.1.0-alpha.5
+- `ratatui-widgets`                                  >= v0.3.0-alpha.4
+- `ratatui-macros`                                   >= v0.7.0-alpha.3
+
+```zsh +exec
+cd ../ratatui
+cargo build \
+--release \
+--package ratatui \
+--no-default-features \
+--features all-widgets,macros,underline-color,scrolling-regions,unstable \
+--target aarch64-unknown-none
+```
+
 <!-- end_slide -->
 
 

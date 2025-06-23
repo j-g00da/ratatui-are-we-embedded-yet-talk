@@ -1,5 +1,5 @@
 transition:
-  duration_millis: 750
+  duration_millis: 300
   frames: 45
   animation:
     style: fade
