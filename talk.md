@@ -166,13 +166,75 @@ Rustmeet 2025
 
 Ratatui on Minitel
 ===
-TODO: context why I talk about it here (plule also used esp32)
+![image:width:100%](assets/minitel.png)
+Credit: @plule, https://github.com/plule/minitel
 <!-- end_slide -->
 
 
 Few words about the standard library and `#![no_std]`
 ===
-TODO: why no_std is a thing, linking stuff, std, core, alloc, libc etc.
+- By default, every new rust project links to `std` crate
+- `std` includes and re-exports contents from `core` and `alloc` crates
+```mermaid +render +width:100%
+graph TD
+    primitive_types[Primitive Types]
+    core_modules[Modules: array, clone, cmp, convert, default, error, iter, ops, option, result, slice, str, ...]
+    core_macros[Macros: assert!, cfg!, env!, include!, panic!, ...]
+
+    subgraph "core"
+        primitive_types
+        core_modules
+        core_macros
+    end
+    
+    alloc_modules[Modules: boxed, fmt, rc, slice, string, vec, ...]
+    alloc_macros[Macros: format!, vec!]
+
+    subgraph "alloc"
+        alloc_modules
+        alloc_macros
+    end
+    
+    std_modules[Modules: fs, io, os, thread]
+    std_macros[Macros: print!, thread_local!, ...]
+
+    subgraph "std"
+        core
+        alloc
+        std_modules
+        std_macros
+    end
+```
+<!-- end_slide -->
+
+
+Few words about the standard library and `#![no_std]`
+===
+# Adding `no_std` attribute in `lib.rs` or `main.rs` makes the project link to `core` instead of `std`
+```mermaid +render +width:80%
+graph TD
+    primitive_types[Primitive Types]
+    core_modules[Modules: array, clone, cmp, convert, default, error, iter, ops, option, result, slice, str, ...]
+    core_macros[Macros: assert!, cfg!, env!, include!, panic!, ...]
+
+    subgraph "core"
+        primitive_types
+        core_modules
+        core_macros
+    end
+```
+# Results?
+`core` only includes abstractions and pure-rust implementations:
+- No os-dependant functionalities, because we have no operating system (not entirely true)
+- No filesystem
+- No printing - we have no stdout after all!
+- No threading or TLS
+- No heap! - can't dynamically allocate memory, so no `Vec`, no `String` or even pointer types (`Box`, `Rc`, `Arc`, ...)
+
+# Why even bother then?
+Your code can run on almost anything, not only desktop, mobile or in the browser, but also on microcontrollers, 
+bare-metal, probably also on minecraft redstone, potatoes, ant farm or in your dreams.
+
 <!-- end_slide -->
 
 
@@ -244,6 +306,12 @@ pub trait Backend {
 <!-- end_slide -->
 
 
+embedded-graphics
+===
+TODO
+<!-- column: 1 -->
+
+
 Mousefood v0.0.1
 ===
 
@@ -266,7 +334,20 @@ Used `IBM437` crate in order to add _minimal_ unicode support.
 
 Unicode
 ===
-TODO: Unicode did not work
+<!-- column_layout: [1, 1] -->
+<!-- column: 0 -->
+
+![image:width:100%](assets/box_drawing.png)
+
+<!-- column: 1 -->
+
+![image:width:100%](assets/braille.png)
+
+<!-- column_layout: [1] -->
+<!-- column: 0 -->
+
+source: Wikipedia
+
 <!-- end_slide -->
 
 
@@ -306,12 +387,11 @@ Cozette
 
 embedded-graphics-unicodefonts
 ===
-TODO: unicode cd.
+So I made my own font crate...
 
 ![image:width:100%](assets/unicodefonts.png)
 
 <!-- end_slide -->
-
 
 
 Buffer flushing inconsistencies
@@ -326,9 +406,23 @@ TODO
 <!-- end_slide -->
 
 
-Demo
+Demos!
 ===
-TODO: demo
+![image:width:50%](assets/esp32_demo_app.gif)
+![image:width:100%](assets/esp32_demo_double.gif)
+<!-- end_slide -->
+
+
+Demos!
+===
+![image:width:100%](assets/esp32_deadbaed.png)
+Credit: @deadbaed, https://philippeloctaux.com
+<!-- end_slide -->
+
+Demos!
+===
+![image:width:100%](assets/tuitar.gif)
+Credit: @orhun, https://github.com/orhun/tuitar
 <!-- end_slide -->
 
 
