@@ -154,7 +154,13 @@ Ratzilla
 
 Rustmeet 2025
 ===
-TODO: few words about esp32 quiz device
+![rustmeet_flashing](assets/rustmeet_flashing.jpg)
+<!-- end_slide -->
+
+
+Rustmeet 2025
+===
+![image:width:100%](assets/rustmeet_esp.png)
 <!-- end_slide -->
 
 
@@ -164,7 +170,7 @@ TODO: context why I talk about it here (plule also used esp32)
 <!-- end_slide -->
 
 
-Few words about the standard library and `#[no_std]`
+Few words about the standard library and `#![no_std]`
 ===
 TODO: why no_std is a thing, linking stuff, std, core, alloc, libc etc.
 <!-- end_slide -->
@@ -172,6 +178,25 @@ TODO: why no_std is a thing, linking stuff, std, core, alloc, libc etc.
 
 Std on embedded?
 ===
+
+# Hardware abstraction layers (HAL) crates for ESP32 family of microcontrollers:
+
+<!-- column_layout: [1, 1] -->
+<!-- column: 0 -->
+
+## esp-hal
+
+- Bare metal (`#![no_std]`)
+- Development funded by Espressif
+
+<!-- column: 1 -->
+
+## esp-idf-hal
+
+- With standard library support!
+- ✨Community effort✨
+- Requires a custom toolchain
+
 TODO: esp-idf-svc, how it works with std
 <!-- end_slide -->
 
@@ -307,7 +332,7 @@ TODO: demo
 <!-- end_slide -->
 
 
-Ok, let's get back to `#[no_std]` thing...
+Ok, let's get back to `#![no_std]` thing...
 ===
 TODO: the tracking issue, list things that that required changes
 <!-- end_slide -->
