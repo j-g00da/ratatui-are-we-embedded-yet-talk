@@ -152,13 +152,13 @@ Ratzilla
 <!-- end_slide -->
 
 
-Rustmeet 2025
+Rustmeet 2025 (1/2)
 ===
 ![rustmeet_flashing](assets/rustmeet_flashing.jpg)
 <!-- end_slide -->
 
 
-Rustmeet 2025
+Rustmeet 2025 (2/2)
 ===
 ![image:width:100%](assets/rustmeet_esp.png)
 <!-- end_slide -->
@@ -171,7 +171,7 @@ Credit: @plule, https://github.com/plule/minitel
 <!-- end_slide -->
 
 
-Few words about the standard library and `#![no_std]`
+Few words about the standard library and `#![no_std]` (1/2)
 ===
 - By default, every new rust project links to `std` crate
 - `std` includes and re-exports contents from `core` and `alloc` crates
@@ -208,7 +208,7 @@ graph TD
 <!-- end_slide -->
 
 
-Few words about the standard library and `#![no_std]`
+Few words about the standard library and `#![no_std]` (2/2)
 ===
 # Adding `no_std` attribute in `lib.rs` or `main.rs` makes the project link to `core` instead of `std`
 ```mermaid +render +width:80%
@@ -259,7 +259,6 @@ Std on embedded?
 - ✨Community effort✨
 - Requires a custom toolchain
 
-TODO: esp-idf-svc, how it works with std
 <!-- end_slide -->
 
 
@@ -269,36 +268,26 @@ Build your own backend (quickstart)
 pub trait Backend {
     /// Error type associated with this Backend.
     type Error: core::error::Error;
-
     /// Draw the given content to the terminal screen.
     fn draw<'a, I>(&mut self, content: I) -> Result<(), Self::Error>
     where
         I: Iterator<Item=(u16, u16, &'a Cell)>;
-
     /// Hide the cursor on the terminal screen.
     fn hide_cursor(&mut self) -> Result<(), Self::Error>;
-
     /// Show the cursor on the terminal screen.
     fn show_cursor(&mut self) -> Result<(), Self::Error>;
-
     /// Get the current cursor position on the terminal screen.
     fn get_cursor_position(&mut self) -> Result<Position, Self::Error>;
-
     /// Set the cursor position on the terminal screen to the given x and y coordinates.
     fn set_cursor_position<P: Into<Position>>(&mut self, position: P) -> Result<(), Self::Error>;
-
     /// Clears the whole terminal screen
     fn clear(&mut self) -> Result<(), Self::Error>;
-
     /// Clears a specific region of the terminal specified by the [`ClearType`] parameter
     fn clear_region(&mut self, clear_type: ClearType) -> Result<(), Self::Error>;
-
     /// Get the size of the terminal screen in columns/rows as a [`Size`].
     fn size(&self) -> Result<Size, Self::Error>;
-
     /// Get the size of the terminal screen in columns/rows and pixels as a [`WindowSize`].
     fn window_size(&mut self) -> Result<WindowSize, Self::Error>;
-
     /// Flush any buffered content to the terminal screen.
     fn flush(&mut self) -> Result<(), Self::Error>;
 }
@@ -308,8 +297,22 @@ pub trait Backend {
 
 embedded-graphics
 ===
-TODO
+<!-- column_layout: [2, 5] -->
+<!-- column: 0 -->
+
+![image:width:100%](assets/embedded_graphics.png)
+
 <!-- column: 1 -->
+
+> Embedded-graphics is a 2D graphics library that is focused on memory constrained embedded devices.
+> A core goal of embedded-graphics is to draw graphics without using any buffers; the crate is no_std compatible and works without a dynamic memory allocator, and without pre-allocating large chunks of memory. To achieve this, it takes an Iterator based approach, where pixel colors and positions are calculated on the fly, with the minimum of saved state. This allows the consuming application to use far less RAM at little to no performance penalty.
+
+~ embedded-graphics docs
+
+![image:width:100%](assets/embedded_graphics_banner.jpg)
+Source: embedded-graphics
+
+<!-- end_slide -->
 
 
 Mousefood v0.0.1
@@ -396,11 +399,33 @@ So I made my own font crate...
 
 Buffer flushing inconsistencies
 ===
-TODO
+# Many display drivers (e.g. `mipidsi`) write directly to the display, but not all of them...
+- Some drivers have a built-in buffer and require flushing to send anything to the display.
+- This is not abstracted by embedded-graphics, as using a buffer goes against what embedded-graphics essentially is (a buffer-less graphics library).
+# Solution in Mousefood v0.2
+Make it possible to pass a `flush_callback`:
+```rust
+let mut driver = WeActStudio290BlackWhiteDriver::new(spi_interface, busy, rst, delay);
+let mut display = Display290BlackWhite::new();
+
+driver.init().unwrap();
+
+let config = EmbeddedBackendConfig {
+    flush_callback: Box::new(move |d| { driver.full_update(d).unwrap(); }),
+    ..Default::default()
+};
+let backend = EmbeddedBackend::new(&mut display, config);
+```
+This works and is pretty simple, but since Mousefood buffers pixels, we now have unnecessary double buffering with some drivers...
+
+# Solution in Mousefood v0.3 (unreleased)
+Approach suggested by @deadbaed:  
+`BufferedDisplay` trait + separate driver integration crates. (Work in progress)
+
 <!-- end_slide -->
 
 
-Optimizations
+Final notes
 ===
 TODO
 <!-- end_slide -->
@@ -428,39 +453,111 @@ Credit: @orhun, https://github.com/orhun/tuitar
 
 Ok, let's get back to `#![no_std]` thing...
 ===
-TODO: the tracking issue, list things that that required changes
+
+# Making Ratatui no-std compatible can't be that hard, right? 
+It's just...
+
+<!-- column_layout: [1, 1] -->
+<!-- column: 0 -->
+
+![image:width:100%](assets/no_std_prs1.png)
+
+<!-- column: 1 -->
+
+![image:width:100%](assets/no_std_prs2.png)
+
+<!-- column_layout: [1] -->
+<!-- column: 0 -->
+and that's pretty much it. (I don't think this list is complete actually)
+
 <!-- end_slide -->
 
 
-Trivial changes
+Required changes (1/5)
 ===
 
-- Use `core` or `alloc` instead of `std` if possible
-- Add linter rules that check for unnecessary `std` usages
-- Disable `std` features in upstream crates
-- Use `kasuari` instead of unmaintained `cassowary` crate
-- Add necessary feature flags
+<!-- column_layout: [1, 1] -->
+<!-- column: 0 -->
+
+# Link to `alloc` crate (this requires downstream `no_std` crates to setup a global allocator)
+```rust
+extern crate alloc;
+```
+# Use `core` or `alloc` instead of `std` if possible
+```diff
+- use std::rc::Rc;
++ use alloc::rc::Rc;
+- use std::cell::RefCell;
++ use core::cell::RefCell;
+```
+# Add linter rules that check for unnecessary `std` usages
+```rust
+#![warn(clippy::std_instead_of_core)]
+#![warn(clippy::std_instead_of_alloc)]
+#![warn(clippy::alloc_instead_of_core)]
+```
+# Make it easy to disable `std` features in upstream crates
+```toml
+[features]
+std = ["thiserror/std"]
+
+[dependencies]
+thiserror = { workspace = true, default-features = false }
+```
+
+<!-- column: 1 -->
+
+# Use `hashbrown` for a drop-in, no-std `HashMap` replacement
+```rust
+use hashbrown::HashMap;
+```
+# Use `kasuari` instead of unmaintained `cassowary` crate
+# Add necessary feature flags
+# Make crate no-std compatible, but still link to `std` by default
+```rust
+#![no_std]
+
+#[cfg(feature = "std")]
+extern crate std;
+```
 
 TODO: code snippets
 <!-- end_slide -->
 
 
-Upstream crates
+Required changes (2/5)
 ===
-- make `kasuari` and `line-clipping` not require `std`
+# Changes in upstream crates
+## `kasuari`
+- Change usages of `std` to `core` and `alloc`
+- Add `#![no_std]` attribute
+- Link in `alloc` crate
+- Disable `std` features in dependencies (and add `std` feature flag to re-enable them)
+## `line-clipping`
+- Adding `#![no_std]` was sufficient
 
-TODO: code snippets
+
 <!-- end_slide -->
 
 
-Layout cache
+Required changes (3/5)
 ===
+# Remove `io::Error` from `Backend` trait
 TODO
 <!-- end_slide -->
 
 
-f64 polyfills
+Required changes (4/5)
 ===
+# No-std compatible layout cache
+TODO
+<!-- end_slide -->
+
+
+Required changes (5/5)
+===
+# Create f64 polyfills
+
 <!-- column_layout: [1, 1] -->
 <!-- column: 0 -->
 
@@ -548,5 +645,5 @@ TODO: upcoming mousefood release
 
 Rat in The Wild Challenge
 ===
-TODO
+![image:width:100%](assets/ritw.jpg)
 <!-- end_slide -->
