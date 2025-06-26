@@ -431,20 +431,26 @@ TODO
 <!-- end_slide -->
 
 
-Demos!
+Demos! (1/4)
 ===
 ![image:width:50%](assets/esp32_demo_app.gif)
 ![image:width:100%](assets/esp32_demo_double.gif)
 <!-- end_slide -->
 
 
-Demos!
+Demos! (2/4)
+===
+![image:width:100%](assets/epd.jpeg)
+<!-- end_slide -->
+
+
+Demos! (3/4)
 ===
 ![image:width:100%](assets/esp32_deadbaed.png)
 Credit: @deadbaed, https://philippeloctaux.com
 <!-- end_slide -->
 
-Demos!
+Demos! (4/4)
 ===
 ![image:width:100%](assets/tuitar.gif)
 Credit: @orhun, https://github.com/orhun/tuitar
