@@ -70,6 +70,7 @@ What is Ratatui?
 > which can be used for command-line applications, dashboards, and other interactive console programs.
 
 ~ Ratatui docs
+
 <!-- end_slide -->
 
 
@@ -77,6 +78,31 @@ Pushing TUI to the limits
 ===
 - `cxreiff/`*bevy_ratatui_camera* - `render bevy application frames to the terminal`
 - `junkdog/`*tachyonfx*           - `shader-like effects in the terminal`
+
+```
+          ___
+        ,"---".
+        :     ;
+         `-.-'
+          | |
+          | |
+          | |
+       _.-\_/-._
+    _ / |     | \ _
+   / /   `---'   \ \
+  /  `-----------'  \
+ /,-""-.       ,-""-.\
+( i-..-i       i-..-i )
+|`|    |-------|    |'|
+\ `-..-'  ,=.  `-..-'/
+ `--------|=|-------'
+          | |
+          \ \
+           ) ) hjw
+          / /
+         ( (
+```
+
 <!-- end_slide -->
 
 
@@ -104,10 +130,21 @@ soft_ratatui
 > Fast, portable, no-bloat.
 > 
 > Optimized for speed, generally faster than running ratatui inside a terminal. 120+ fps on normal workloads.
-> Only one dependency, Unicode Font rendering powered by cosmic-text
+> Only one dependency, Unicode Font rendering powered by cosmic-text.
 > Custom portable pixel rasterizer.
 
 ~ soft_ratatui docs
+
+<!-- end_slide -->
+
+
+ratatui-wgpu
+===
+> A wgpu based rendering backend for ratatui.
+> 
+> This started out as a custom rendering backend for a game I'm developing, and I thought I'd make it available to the broader community as an alternative rendering target for TUI applications. One of its primary goals is to support serving TUI applications on the web & desktop.
+
+~ ratatui-wgpu docs
 
 <!-- end_slide -->
 
@@ -195,7 +232,7 @@ graph TD
         alloc_macros
     end
     
-    std_modules[Modules: fs, io, os, thread]
+    std_modules[Modules: fs, io, os, thread, ...]
     std_macros[Macros: print!, thread_local!, ...]
 
     subgraph "std"
@@ -357,6 +394,7 @@ source: Wikipedia
 Embedded-graphics fonts
 ===
 Designed to fit on most microcontrollers.
+
 Cons:
 - Small range of available characters (`ASCII` or `ISO 8859` or `JIS X0201`) making it impossible to draw most widgets.
 
@@ -385,6 +423,9 @@ Idea - use `embedded-graphics/bdf` to generate a custom `embedded-graphics` font
 Cozette
 ===
 `the-moonwitch/`*Cozette* (Literally this font) 
+
+![image:width:30%](assets/cozette.png)
+
 <!-- end_slide -->
 
 
@@ -423,13 +464,6 @@ Approach suggested by @deadbaed:
 `BufferedDisplay` trait + separate driver integration crates. (Work in progress)
 
 <!-- end_slide -->
-
-
-Final notes
-===
-TODO
-<!-- end_slide -->
-
 
 Demos! (1/4)
 ===
@@ -518,7 +552,14 @@ thiserror = { workspace = true, default-features = false }
 use hashbrown::HashMap;
 ```
 # Use `kasuari` instead of unmaintained `cassowary` crate
+```diff
+- cassowary
++ kasuari
+```
 # Add necessary feature flags
+```toml
+layout-cache = ["std"]
+```
 # Make crate no-std compatible, but still link to `std` by default
 ```rust
 #![no_std]
@@ -527,7 +568,6 @@ use hashbrown::HashMap;
 extern crate std;
 ```
 
-TODO: code snippets
 <!-- end_slide -->
 
 
@@ -537,11 +577,23 @@ Required changes (2/5)
 ## `kasuari`
 - Change usages of `std` to `core` and `alloc`
 - Add `#![no_std]` attribute
-- Link in `alloc` crate
+- Link to `alloc` crate
+- Use `hashbrown` for hashmaps
 - Disable `std` features in dependencies (and add `std` feature flag to re-enable them)
 ## `line-clipping`
 - Adding `#![no_std]` was sufficient
 
+```plain
+         ,..........   ..........,
+     ,..,'          '.'          ',..,
+    ,' ,'            :            ', ',
+   ,' ,'             :             ', ',
+  ,' ,'              :              ', ',
+ ,' ,'............., : ,.............', ',
+,'  '............   '.'   ............'  ',
+ '''''''''''''''''';''';''''''''''''''''''
+                    '''
+```
 
 <!-- end_slide -->
 
@@ -549,14 +601,47 @@ Required changes (2/5)
 Required changes (3/5)
 ===
 # Remove `io::Error` from `Backend` trait
-TODO
+- Add associated `Error` type to `Backend` instead of explicit `std::io::Error`
+```diff
++ type Error: core::error::Error;
+```
+```diff
+- -> io::Result<()>
++ -> Result<(), Self::Error>
+```
+- Still use `std::io::Error` in built-in backend implementations, to (mostly) preserve backward compatibility.
+```rust 
+type Error = std::io::Error;
+```
+
 <!-- end_slide -->
 
 
 Required changes (4/5)
 ===
 # No-std compatible layout cache
-TODO
+The layout cache uses TLS which is not available.
+For now we decided to just put the cache behind a feature flag:
+```rust
+#[cfg(feature = "layout-cache")]
+std::thread_local! {
+    static LAYOUT_CACHE: core::cell::RefCell<Cache> = core::cell::RefCell::new(Cache::new(
+        NonZeroUsize::new(Layout::DEFAULT_CACHE_SIZE).unwrap(),
+    ));
+}
+```
+
+I also experimented with an implementation using `critical_section`:
+```rust
+use critical_section::Mutex;
+use once_cell::sync::Lazy;
+
+static LAYOUT_CACHE: Lazy<Mutex<RefCell<Cache>>> = Lazy::new(|| {
+    Mutex::new(RefCell::new(LruCache::new(NonZeroUsize::new(Layout::DEFAULT_CACHE_SIZE).unwrap())))
+});
+```
+...but it's far from perfect and adds two new dependencies that won't be required most of the time.
+
 <!-- end_slide -->
 
 
@@ -645,7 +730,31 @@ cargo build \
 
 What's next?
 ===
-TODO: upcoming mousefood release
+# We are planning to release Ratatui v0.30 soon!
+
+<!-- column_layout: [1, 1] -->
+<!-- column: 0 -->
+
+The biggest update since forking tui-rs:
+- Modularization
+- `no_std` compatibility
+- Simpler API (centering ~~a div~~ was never as easy)
+- Improved documentation
+- Block border merging
+- Better serialization support
+- Much, much more...
+
+<!-- column: 1 -->
+
+```plain
+  ,,==.
+ //    `
+||      ,--~~~~-._ _(\--,_
+ \\._,-~   \      '    *  `o
+  `---~\( _/,___( /_/`---~~
+        ``==-    `==-,
+```
+
 <!-- end_slide -->
 
 

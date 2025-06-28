@@ -4,7 +4,7 @@ layout {
         args "-Xx" "--config-file=config.yaml" "talk.md"
     }
     floating_panes {
-        pane name="cheese :3" {
+        pane name="-" {
             height "60%"
             width "84%"
             x "8%"
