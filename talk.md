@@ -732,7 +732,7 @@ What's next?
 ===
 # We are planning to release Ratatui v0.30 soon!
 
-<!-- column_layout: [1, 1] -->
+<!-- column_layout: [4, 3] -->
 <!-- column: 0 -->
 
 The biggest update since forking tui-rs:
@@ -743,6 +743,14 @@ The biggest update since forking tui-rs:
 - Block border merging
 - Better serialization support
 - Much, much more...
+
+# Mousefood v0.3 will follow soon after.
+- Modularity
+- `no_std` compatibility
+- Cursor support
+- Better modifiers support
+- More examples and better documentation
+- And more...
 
 <!-- column: 1 -->
 
@@ -755,6 +763,20 @@ The biggest update since forking tui-rs:
         ``==-    `==-,
 ```
 
+```plain
+         _--"-.
+      .-"      "-.
+     |""--..      '-.
+     |      ""--..   '-.
+     |.-. .-".    ""--..".
+     |'./  -_'  .-.      |
+     |      .-. '.-'   .-'
+     '--..  '.'    .-  -.
+          ""--..   '_'   :
+                ""--..   |
+                      ""-' mga
+```
+
 <!-- end_slide -->
 
 
@@ -762,3 +784,73 @@ Rat in The Wild Challenge
 ===
 ![image:width:100%](assets/ritw.jpg)
 <!-- end_slide -->
+
+
+Acknowledgements
+===
+<!-- column_layout: [1, 1, 1] -->
+<!-- column: 0 -->
+
+# Special thanks to:
+
+*Adrian Papari*   
+`@junkdog`
+- tachyonfx
+
+*Clement Tsang*   
+`@ClementTsang`
+- bottom (btm)
+
+*Cooper Reiff*  
+`@cxreiff`
+- bevy_ratatui_camera
+- ttysvr
+
+*Florian Dehau*  
+`@fdehau`
+- original author of tui-rs, who made ratatui possible
+
+`@Jesterhearts`
+- ratatui-wgpu
+
+<!-- column: 1 -->
+
+*Léopold Koprivnik*  
+`@SkwalExe`
+- rsfrac
+
+*Orhun Parmaksız*  
+`@orhun`
+- ratzilla
+- tuitar
+
+*Philippe Loctaux*  
+`@deadbaed`
+- a lot of help on mousefood v0.3
+
+*Pierre Lulé*  
+`@plule`
+- minitel
+
+*Reuben Olinsky*  
+`@reubeno`
+- tui-uefi
+
+<!-- column: 2 -->
+
+*Stephen Korzen*  
+`@gold-silver-copper`
+- egui-ratatui
+- soft_ratatui
+
+# And all contributors to Ratatui and its ecosystem!
+
+ASCII arts from:  
+`www.asciiart.eu`, `ascii.co.uk`
+
+```
+ ()()         ____
+ (..)        /|o  |
+ /\/\       /o|  o|
+c\db/o...  /o_|_o_|   -Row
+```
