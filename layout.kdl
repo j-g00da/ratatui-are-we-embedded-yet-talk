@@ -1,7 +1,7 @@
 layout {
     pane name="Ratatui - Are We Embedded Yet?" {
         command "presenterm"
-        args "-Xx" "--config-file=config.yaml" "talk.md"
+        args "-Xx" "--config-file=config.yaml" "talk_part1.md"
     }
     floating_panes {
         pane name="-" {

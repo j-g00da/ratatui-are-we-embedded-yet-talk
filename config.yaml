@@ -3,3 +3,5 @@ transition:
   frames: 45
   animation:
     style: fade
+speaker_notes:
+  always_publish: true

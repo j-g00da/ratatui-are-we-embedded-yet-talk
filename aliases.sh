@@ -8,5 +8,3 @@ alias soft='(cd ~/dev/soft_ratatui/bevy_cube_example && cargo run --release)'
 alias wgpu='open -a "Google Chrome" "https://jesterhearts.github.io"'
 alias uefi='open -a "Google Chrome" "https://github.com/reubeno/tui-uefi"'
 alias ratzilla='open -a "Google Chrome" "https://orhun.dev/ratzilla/demo/"'
-
-alias notes='cat notes.md'
